@@ -180,7 +180,7 @@ export function App() {
         setSpeechStatus(status);
         setIsListening(status === 'listening' || status === 'processing');
         if (err) setErrorMessage(err);
-        else if (status === 'listening') setErrorMessage(undefined);
+        else if (status === 'listening' || status === 'idle') setErrorMessage(undefined);
       },
       onSoundLevel: (level) => {
         setSoundLevel(level);
@@ -212,28 +212,26 @@ export function App() {
   }, [settings.language]);
 
   // Toggle listening
-  const handleToggleListening = () => {
+  const handleToggleListening = async () => {
     if (isListening) {
       speechService.stopListening();
       setIsListening(false);
       setSpeechStatus('idle');
     } else {
       setErrorMessage(undefined);
-      speechService.startListening().then((started) => {
-        if (started) {
-          setIsListening(true);
-        }
-      });
-    }
-  };
-
-  const handleRequestMicPermission = () => {
-    setErrorMessage(undefined);
-    speechService.startListening().then((started) => {
+      const started = await speechService.startListening();
       if (started) {
         setIsListening(true);
       }
-    });
+    }
+  };
+
+  const handleRequestMicPermission = async () => {
+    setErrorMessage(undefined);
+    const started = await speechService.startListening();
+    if (started) {
+      setIsListening(true);
+    }
   };
 
   const handleClearHistory = () => {

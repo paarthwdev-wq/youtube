@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mic, MicOff, AlertCircle, RefreshCw, Volume2 } from 'lucide-react';
+import { Mic, MicOff, AlertCircle, RefreshCw, Volume2, ExternalLink } from 'lucide-react';
 import { SpeechStatus } from '../lib/speechService';
 
 interface MicrophoneControlProps {
@@ -55,7 +55,7 @@ export const MicrophoneControl: React.FC<MicrophoneControlProps> = ({
           <button
             id="main-mic-toggle-btn"
             onClick={isPermissionDenied || isError ? onRequestPermission : onToggleListening}
-            className={`group relative flex items-center justify-center rounded-full transition-all duration-300 focus:outline-none focus:ring-4 ${
+            className={`group relative flex items-center justify-center rounded-full transition-all duration-300 focus:outline-none focus:ring-4 cursor-pointer ${
               isListening
                 ? 'w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-tr from-red-600 to-rose-500 text-white shadow-lg shadow-red-600/40 focus:ring-red-500/40'
                 : isError
@@ -103,17 +103,17 @@ export const MicrophoneControl: React.FC<MicrophoneControlProps> = ({
                   <span className="text-red-400">LISTENING...</span>
                 </>
               ) : isError ? (
-                <span className="text-red-400">VOICE CONTROL PAUSED</span>
+                <span className="text-red-400">VOICE CONTROL READY</span>
               ) : (
                 <span>START VOICE CONTROL</span>
               )}
             </h2>
             <p className="mt-1 text-xs text-zinc-400 max-w-md mx-auto">
               {isListening
-                ? 'Say "चलाओ", "रुको", "म्यूट", "आवाज बढ़ाओ", or a speed number like "2.5".'
+                ? 'Speak now: "चलाओ", "रुको", "म्यूट", "आवाज बढ़ाओ", or "2.5 speed".'
                 : isError
-                ? 'Click the button or Retry below to reactivate voice commands.'
-                : 'Click to start hands-free voice control for YouTube.'}
+                ? 'Click the button to grant microphone access and start.'
+                : 'Click above to turn on your microphone and start voice control.'}
             </p>
           </div>
 
@@ -128,15 +128,14 @@ export const MicrophoneControl: React.FC<MicrophoneControlProps> = ({
 
           {/* Error Banner */}
           {isError && errorMessage && (
-            <div className="mt-4 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-red-950/70 border border-red-800/80 text-xs text-red-300 max-w-md">
+            <div className="mt-4 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-red-950/70 border border-red-800/80 text-xs text-red-300 max-w-md text-left">
               <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-              <div className="text-left flex-1">
-                <span className="font-semibold block">Notice</span>
+              <div className="flex-1">
                 <span>{errorMessage}</span>
               </div>
               <button
                 onClick={onRequestPermission}
-                className="px-2.5 py-1 bg-red-600 hover:bg-red-500 rounded text-xs font-semibold text-white whitespace-nowrap flex items-center gap-1"
+                className="px-2.5 py-1 bg-red-600 hover:bg-red-500 rounded text-xs font-semibold text-white whitespace-nowrap flex items-center gap-1 cursor-pointer"
               >
                 <RefreshCw className="w-3 h-3" />
                 <span>Retry</span>
@@ -144,20 +143,26 @@ export const MicrophoneControl: React.FC<MicrophoneControlProps> = ({
             </div>
           )}
 
-          {/* Permission Denied Banner */}
+          {/* Permission Denied Banner with New Tab helper */}
           {isPermissionDenied && (
-            <div className="mt-4 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-red-950/70 border border-red-800/80 text-xs text-red-300 max-w-md">
-              <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-              <div className="text-left flex-1">
-                <span className="font-semibold block">Microphone permission required</span>
-                <span>Please allow microphone access in your browser to use voice control.</span>
+            <div className="mt-4 flex flex-col gap-2 p-3.5 rounded-xl bg-red-950/80 border border-red-800 text-xs text-red-200 max-w-lg text-left">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <span className="font-semibold text-white block mb-0.5">Microphone Permission Required</span>
+                  <p className="text-zinc-300 leading-relaxed">
+                    Browser security requires permission to use your microphone. If you are viewing in an embedded iframe preview, click <strong>"Open in New Tab"</strong> or allow permission via the browser icon.
+                  </p>
+                </div>
               </div>
-              <button
-                onClick={onRequestPermission}
-                className="px-2.5 py-1 bg-red-600 hover:bg-red-500 rounded text-xs font-semibold text-white whitespace-nowrap"
-              >
-                Allow
-              </button>
+              <div className="flex items-center justify-end gap-2 mt-1">
+                <button
+                  onClick={onRequestPermission}
+                  className="px-3 py-1.5 bg-red-600 hover:bg-red-500 rounded-lg text-xs font-semibold text-white cursor-pointer transition-colors"
+                >
+                  Grant Permission
+                </button>
+              </div>
             </div>
           )}
 
@@ -166,7 +171,7 @@ export const MicrophoneControl: React.FC<MicrophoneControlProps> = ({
             <div className="mt-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-950/70 border border-amber-800/70 text-xs text-amber-200 max-w-md">
               <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0" />
               <span className="text-left">
-                Voice recognition is not supported in this browser. Please use Chrome, Edge, or Brave.
+                Speech recognition is supported on Chrome, Edge, and Brave.
               </span>
             </div>
           )}
