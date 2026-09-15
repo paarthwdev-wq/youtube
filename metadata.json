@@ -1,0 +1,6 @@
+{
+  "name": "Voice Tube Control",
+  "description": "Hands-free voice-controlled YouTube remote for desktop playback with Hindi, English, and Hinglish voice recognition.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

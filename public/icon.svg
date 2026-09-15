@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF334B"/>
+      <stop offset="100%" stop-color="#D90429"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181B"/>
+      <stop offset="100%" stop-color="#09090B"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Base background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  <rect width="508" height="508" x="2" y="2" rx="110" fill="none" stroke="#27272A" stroke-width="3"/>
+
+  <!-- YouTube-like TV Screen Shape -->
+  <rect x="76" y="106" width="360" height="250" rx="56" fill="url(#redGrad)" filter="url(#glow)"/>
+
+  <!-- Play Triangle -->
+  <polygon points="215,185 335,231 215,277" fill="#FFFFFF"/>
+
+  <!-- Central Mic Overlay Emblem in Bottom Right of Card -->
+  <circle cx="366" cy="366" r="68" fill="#111115" stroke="#27272A" stroke-width="4"/>
+  <circle cx="366" cy="366" r="54" fill="url(#redGrad)"/>
+
+  <!-- Crisp Mic Icon -->
+  <path d="M366,334 C359.373,334 354,339.373 354,346 L354,366 C354,372.627 359.373,378 366,378 C372.627,378 378,372.627 378,366 L378,346 C378,339.373 372.627,334 366,334 Z" fill="#FFFFFF"/>
+  <path d="M344,360 C344,372.15 353.85,382 366,382 C378.15,382 388,372.15 388,360 M366,382 L366,394 M356,394 L376,394" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Audio Wave lines on left -->
+  <rect x="110" y="385" width="8" height="26" rx="4" fill="#52525B"/>
+  <rect x="126" y="375" width="8" height="46" rx="4" fill="#A1A1AA"/>
+  <rect x="142" y="365" width="8" height="66" rx="4" fill="#FF334B"/>
+  <rect x="158" y="378" width="8" height="40" rx="4" fill="#A1A1AA"/>
+  <rect x="174" y="388" width="8" height="20" rx="4" fill="#52525B"/>
+</svg>

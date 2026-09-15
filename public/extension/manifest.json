@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Voice Tube Control - Extension Bridge",
+  "version": "1.0.0",
+  "description": "Seamlessly bridges VoiceTube Control desktop/web app with YouTube tabs for hands-free voice playback control.",
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content-youtube.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-bridge.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://*/*"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "VoiceTube Control Remote"
+  }
+}
