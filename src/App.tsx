@@ -110,7 +110,7 @@ export function App() {
   // Central Command Execution Pipeline
   const handleExecuteVoicePhrase = useCallback(
     async (rawText: string) => {
-      if (!rawText.trim()) return;
+      if (!rawText || !rawText.trim()) return;
 
       const parsed = parseVoiceCommand(rawText);
 
@@ -189,7 +189,6 @@ export function App() {
         setInterimTranscript(transcript);
         if (isFinal) {
           executePhraseRef.current(transcript);
-          // Clear interim after short delay
           setTimeout(() => {
             setInterimTranscript('');
           }, 1200);
@@ -204,9 +203,9 @@ export function App() {
     return () => {
       speechService.stopListening();
     };
-  }, []); // Run only once on mount!
+  }, []);
 
-  // Update language dynamically without unmounting the speech loop
+  // Update language dynamically
   useEffect(() => {
     speechService.setLanguage(settings.language);
   }, [settings.language]);
@@ -253,7 +252,7 @@ export function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-6">
-        {/* Section 1: Main Large Central Microphone Control */}
+        {/* Section 1: Main Large Central Microphone Control & Voice Simulator */}
         <MicrophoneControl
           isListening={isListening}
           speechStatus={speechStatus}
@@ -262,6 +261,7 @@ export function App() {
           errorMessage={errorMessage}
           onToggleListening={handleToggleListening}
           onRequestPermission={handleRequestMicPermission}
+          onExecuteCustomPhrase={handleExecuteVoicePhrase}
         />
 
         {/* Section 2: Two Status Cards Side by Side */}

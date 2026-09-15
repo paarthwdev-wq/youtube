@@ -1,7 +1,7 @@
 import React from 'react';
-import { Settings, Puzzle, Mic, Radio } from 'lucide-react';
-import { ConnectionStatus } from '../types';
+import { Settings, Puzzle, ExternalLink } from 'lucide-react';
 import { SpeechStatus } from '../lib/speechService';
+import { ConnectionStatus } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
 
 interface HeaderProps {
@@ -26,17 +26,21 @@ export const Header: React.FC<HeaderProps> = ({
 
   if (speechStatus === 'permission_denied' || speechStatus === 'unsupported' || speechStatus === 'error') {
     systemBadge = {
-      color: 'bg-red-500',
-      ring: 'border-red-500/30 text-red-400 bg-red-950/40',
-      label: speechStatus === 'permission_denied' ? 'Mic Blocked' : 'System Error',
+      color: 'bg-amber-500',
+      ring: 'border-amber-500/30 text-amber-400 bg-amber-950/40',
+      label: speechStatus === 'permission_denied' ? 'Mic Blocked' : 'Voice Standby',
     };
   } else if (speechStatus === 'listening' || speechStatus === 'processing') {
     systemBadge = {
-      color: 'bg-emerald-400 animate-pulse',
-      ring: 'border-emerald-500/40 text-emerald-300 bg-emerald-950/50',
-      label: 'System Listening',
+      color: 'bg-red-500 animate-pulse',
+      ring: 'border-red-500/40 text-red-400 bg-red-950/50',
+      label: 'Mic Live',
     };
   }
+
+  const handleOpenStandalone = () => {
+    window.open(window.location.href, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <header className="border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5">
@@ -71,14 +75,26 @@ export const Header: React.FC<HeaderProps> = ({
             className={`hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold ${systemBadge.ring}`}
           >
             <span className={`w-2 h-2 rounded-full ${systemBadge.color}`}></span>
-            <span>● {systemBadge.label}</span>
+            <span>{systemBadge.label}</span>
           </div>
+
+          {/* Open in Standalone Tab Button */}
+          <button
+            type="button"
+            onClick={handleOpenStandalone}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white text-xs font-medium transition cursor-pointer"
+            title="Open in Full Standalone Tab for direct Microphone hardware access"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-red-400" />
+            <span className="hidden sm:inline">Open Standalone</span>
+          </button>
 
           {/* Extension Bridge Modal Trigger */}
           <button
             id="extension-setup-btn"
+            type="button"
             onClick={onOpenExtensionModal}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition cursor-pointer ${
               connection.extensionInstalled
                 ? 'border-emerald-800/60 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/50'
                 : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white'
@@ -97,8 +113,9 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Settings Trigger */}
           <button
             id="open-settings-btn"
+            type="button"
             onClick={onOpenSettings}
-            className="p-2 rounded-lg border border-zinc-800 bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
+            className="p-2 rounded-lg border border-zinc-800 bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
             aria-label="Settings"
             title="Settings & Tester"
           >
